@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+    <title>Тарифы — Digital Safe</title>
+    <meta name="description" content="Тарифы Digital Safe: бесплатный сейф и Pro за 990 рублей в год. Оплата ещё не подключена.">
+    <meta property="og:title" content="Тарифы — Digital Safe">
+    <meta property="og:description" content="Бесплатно: 1 сейф и 10 МБ. Pro: 990 ₽ в год.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="stylesheet" href="../css/style.css">
+  </head>
+  <body>
+    <a class="skip" href="#main">К содержанию</a>
+    <header class="site-header">
+      <div class="wrap nav-bar">
+        <a class="logo" href="../">
+          <span class="logo-mark" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f8fafc" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
+          Digital Safe
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Меню</button>
+        <nav id="site-nav" class="site-nav" aria-label="Основное меню">
+          <a href="../how-it-works/">Как это работает</a>
+          <a href="../how-it-works/#guide">Руководство</a>
+          <a href="../security/">Безопасность</a>
+          <a href="./" aria-current="page">Тарифы</a>
+          <a class="btn btn-secondary" href="../app/login/">Войти</a>
+          <a class="btn btn-primary" href="../app/">Открыть сейф</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main" class="section">
+      <div class="wrap">
+        <p class="kicker">Цены</p>
+        <h1>Бесплатно или 990 ₽ в год</h1>
+        <p class="lede">Оплата ещё не подключена. Кнопка «Выбрать» оставляет заявку на ранний доступ и ничего не списывает.</p>
+        <div class="prices">
+          <article class="price-card">
+            <h2>Free</h2>
+            <p class="price">0 ₽</p>
+            <ul class="checklist">
+              <li>1 сейф</li>
+              <li>10 МБ</li>
+              <li>Экспорт и импорт</li>
+              <li>Базовая защита в браузере</li>
+            </ul>
+            <div class="price-actions"><a class="btn btn-secondary" href="#early-access">Выбрать</a></div>
+          </article>
+          <article class="price-card featured">
+            <h2>Pro</h2>
+            <p class="price">990 ₽ <span>/ год</span></p>
+            <ul class="checklist">
+              <li>Безлимит сейфов</li>
+              <li>1 ГБ</li>
+              <li>Dead Man's Switch</li>
+              <li>Приоритетная поддержка</li>
+              <li>Ранний доступ к новым функциям</li>
+            </ul>
+            <div class="price-actions"><a class="btn btn-primary" href="#early-access">Выбрать</a></div>
+          </article>
+        </div>
+        <p class="hint">Лимиты Free и Pro описывают будущий сервис. Локальный прототип сейчас хранит один сейф в браузере и не проверяет объём на сервере.</p>
+      </div>
+      <div class="wrap narrow" id="early-access">
+        <h2>Получить ранний доступ</h2>
+        <form class="early-access" data-early-access>
+          <label for="pricing-email">Email</label>
+          <input id="pricing-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+          <button class="btn btn-primary" type="submit">Получить ранний доступ</button>
+          <p class="hint">Отправляя адрес, вы соглашаетесь на <a href="../legal/pd-consent/">обработку персональных данных</a> и подтверждаете, что прочитали <a href="../legal/privacy/">политику конфиденциальности</a>.</p>
+          <p class="form-note" role="status"></p>
+        </form>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap"><p><a href="../legal/offer/">Оферта</a> · <a href="../legal/privacy/">Конфиденциальность</a> · <a href="../legal/cookies/">Cookies</a> · <a href="../legal/pd-consent/">Согласие на ПДн</a></p></div>
+    </footer>
+    <script type="module" src="../js/site.js"></script>
+  </body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+    <title>Digital Safe — секреты, которые видите только вы</title>
+    <meta name="description" content="Цифровой сейф с нулевым разглашением. Шифрование AES-256-GCM в браузере. Пароль и открытый текст не покидают устройство.">
+    <meta name="keywords" content="цифровой сейф, zero-knowledge, AES-256-GCM, PBKDF2, резервная копия">
+    <meta property="og:title" content="Digital Safe — секреты, которые видите только вы">
+    <meta property="og:description" content="Шифрование в браузере. Даже оператор сервиса не видит ваши данные.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ru_RU">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Digital Safe",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Web",
+        "description": "Локальный сейф с шифрованием в браузере и нулевым разглашением.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "RUB"
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <a class="skip" href="#main">К содержанию</a>
+    <header class="site-header">
+      <div class="wrap nav-bar">
+        <a class="logo" href="./" aria-current="page">
+          <span class="logo-mark" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f8fafc" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          </span>
+          Digital Safe
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Меню</button>
+        <nav id="site-nav" class="site-nav" aria-label="Основное меню">
+          <a href="how-it-works/">Как это работает</a>
+          <a href="how-it-works/#guide">Руководство</a>
+          <a href="security/">Безопасность</a>
+          <a href="pricing/">Тарифы</a>
+          <a class="btn btn-secondary" href="app/login/">Войти</a>
+          <a class="btn btn-primary" href="app/">Открыть сейф</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <div class="wrap hero-grid">
+          <div class="rise">
+            <p class="kicker">Zero-knowledge · прототип</p>
+            <h1>Ваши секреты принадлежат <span class="gradient-text">только вам</span></h1>
+            <p class="lede">Цифровой сейф с нулевым разглашением. Шифрование в браузере. Даже мы не увидим ваши данные.</p>
+            <div class="actions">
+              <a class="btn btn-primary" href="app/">Открыть сейф</a>
+              <a class="btn btn-secondary" href="how-it-works/">Как это работает</a>
+            </div>
+            <p class="warning">Забытый мастер-пароль означает безвозвратную потерю. Не храните здесь реальные сид-фразы до аудита.</p>
+          </div>
+          <div class="lock-visual rise rise-delay" aria-hidden="true">
+            <div class="lock-ring"></div>
+            <div class="lock-core">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="features-title">
+        <div class="wrap">
+          <div class="section-head">
+            <p class="kicker">Возможности</p>
+            <h2 id="features-title">Сейф, который некому вскрыть снаружи</h2>
+          </div>
+          <div class="cards">
+            <article class="card">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+              <h3>Шифрование в браузере</h3>
+              <p>AES-256-GCM. Ключ выводится из мастер-пароля и живёт только в памяти открытой вкладки.</p>
+            </article>
+            <article class="card">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v5l3 2"/></svg>
+              <h3>Экстренный доступ</h3>
+              <p>Dead Man's Switch для доверенного лица. Сейчас на экране только макет: сервер ещё не хранит таймер.</p>
+            </article>
+            <article class="card">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3z"/></svg>
+              <h3>Полная приватность</h3>
+              <p>Архитектура no-knowledge: у оператора нет пароля, ключа и открытого текста, которые можно было бы прочитать.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="steps-title">
+        <div class="wrap">
+          <div class="section-head">
+            <p class="kicker">Три шага</p>
+            <h2 id="steps-title">Как это устроено</h2>
+          </div>
+          <ol class="steps">
+            <li class="step">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11.5 12.5 20 4m-2 2 2 2"/></svg>
+              <h3>Создайте мастер-пароль</h3>
+              <p>Не короче 12 символов. Отдельного аккаунта нет: пароль и есть доступ.</p>
+            </li>
+            <li class="step">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+              <h3>Зашифруйте данные</h3>
+              <p>Заметка шифруется до записи. На диске остаются соль и шифротекст.</p>
+            </li>
+            <li class="step">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v5l3 2"/></svg>
+              <h3>Настройте экстренный доступ</h3>
+              <p>Интервал и ключ восстановления пока сохраняются только у вас. Передача доверенному лицу — офлайн.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="security-title">
+        <div class="wrap split">
+          <div>
+            <p class="kicker">Криптография</p>
+            <h2 id="security-title">PBKDF2, 600 000 итераций</h2>
+            <p class="lede">Пароль нормализуется через NFKC, затем из него медленно выводится неэкспортируемый ключ AES-256-GCM. Отдельный хеш пароля не хранится: верный пароль — это успешная расшифровка.</p>
+            <p><a class="btn btn-ghost" href="security/">Подробно о защите</a></p>
+          </div>
+          <div class="card">
+            <p class="mono">PBKDF2-SHA256 · 600000<br>соль 16 байт · IV 12 байт<br>AES-256-GCM</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="pricing-title">
+        <div class="wrap">
+          <div class="section-head">
+            <p class="kicker">Тарифы</p>
+            <h2 id="pricing-title">Начать можно бесплатно</h2>
+          </div>
+          <div class="prices">
+            <article class="price-card">
+              <h3>Бесплатно</h3>
+              <p class="price">0 ₽</p>
+              <p>1 сейф, 10 МБ, экспорт и импорт, базовая защита.</p>
+            </article>
+            <article class="price-card featured">
+              <h3>Pro</h3>
+              <p class="price">990 ₽ <span>/ год</span></p>
+              <p>Безлимит сейфов, 1 ГБ, Dead Man's Switch, приоритетная поддержка.</p>
+            </article>
+          </div>
+          <p><a class="btn btn-primary" href="app/">Начать бесплатно</a></p>
+        </div>
+      </section>
+
+      <section class="section" id="early-access" aria-labelledby="access-title">
+        <div class="wrap narrow">
+          <h2 id="access-title">Получить ранний доступ</h2>
+          <p class="lede">Оставьте email. Сейчас заявка откроется в вашей почтовой программе: сервер писем ещё не подключён.</p>
+          <form class="early-access" data-early-access>
+            <label for="early-email">Email</label>
+            <input id="early-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+            <button class="btn btn-primary" type="submit">Получить ранний доступ</button>
+            <p class="hint">Отправляя адрес, вы соглашаетесь на <a href="legal/pd-consent/">обработку персональных данных</a> и подтверждаете, что прочитали <a href="legal/privacy/">политику конфиденциальности</a>.</p>
+            <p class="form-note" role="status"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap footer-grid">
+        <div>
+          <strong>Digital Safe</strong>
+          <p>Локальный прототип. Оператор: самозанятый Муртазин Владислав Равилевич, ИНН 622602397099.</p>
+          <p>Поддержка: <a href="mailto:vlad.murtazin@internet.ru">vlad.murtazin@internet.ru</a></p>
+        </div>
+        <div>
+          <strong>Документы</strong>
+          <ul>
+            <li><a href="legal/offer/">Публичная оферта</a></li>
+            <li><a href="legal/privacy/">Конфиденциальность</a></li>
+            <li><a href="legal/cookies/">Cookies</a></li>
+            <li><a href="legal/pd-consent/">Согласие на ПДн</a></li>
+          </ul>
+        </div>
+        <div>
+          <strong>Сервис</strong>
+          <ul>
+            <li><a href="how-it-works/">Как это работает</a></li>
+            <li><a href="security/">Безопасность</a></li>
+            <li><a href="pricing/">Тарифы</a></li>
+            <li><a href="app/">Открыть сейф</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+    <script type="module" src="js/site.js"></script>
+  </body>
+</html>

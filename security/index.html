@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+    <title>Безопасность — Digital Safe</title>
+    <meta name="description" content="Как Digital Safe защищает данные: AES-256-GCM, PBKDF2-SHA256 на 600 000 итераций, NFKC и нулевое разглашение.">
+    <meta property="og:title" content="Безопасность — Digital Safe">
+    <meta property="og:description" content="Что шифруется в браузере и чего у оператора нет.">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="stylesheet" href="../css/style.css">
+  </head>
+  <body>
+    <a class="skip" href="#main">К содержанию</a>
+    <header class="site-header">
+      <div class="wrap nav-bar">
+        <a class="logo" href="../">
+          <span class="logo-mark" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f8fafc" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
+          Digital Safe
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Меню</button>
+        <nav id="site-nav" class="site-nav" aria-label="Основное меню">
+          <a href="../how-it-works/">Как это работает</a>
+          <a href="../how-it-works/#guide">Руководство</a>
+          <a href="./" aria-current="page">Безопасность</a>
+          <a href="../pricing/">Тарифы</a>
+          <a class="btn btn-secondary" href="../app/login/">Войти</a>
+          <a class="btn btn-primary" href="../app/">Открыть сейф</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main" class="section">
+      <div class="wrap prose">
+        <p class="kicker">Для тех, кто проверяет</p>
+        <h1>Как это защищает</h1>
+        <p class="lede">Ниже то, что прототип делает сейчас. Независимый аудит ещё не проводился.</p>
+        <h2>Алгоритмы</h2>
+        <ul>
+          <li>KDF: PBKDF2-SHA256, 600 000 итераций, ключ AES-256, <code>extractable: false</code>, только encrypt и decrypt.</li>
+          <li>Шифрование: AES-256-GCM. IV 12 байт, новый на каждое шифрование. Тег подлинности проверяет и пароль, и целость шифротекста.</li>
+          <li>Соль: 16 байт, одна на сейф, хранится открыто. Это не секрет.</li>
+        </ul>
+        <h2>Почему 600 000 итераций</h2>
+        <p>Перебор пароля упирается в медленный KDF, а не в скорость AES. 600 000 — текущий ориентир для PBKDF2-SHA256 в браузере: одна проверка занимает около секунды-двух и остаётся заметной для человека за клавиатурой. Число записано в файл сейфа, чтобы позже его можно было поднять, не ломая старые копии.</p>
+        <h2>NFKC</h2>
+        <p>Перед KDF пароль приводится к NFKC. Одинаковые на вид символы, набранные разной раскладкой Юникода, дают один ключ. Длина тоже считается после нормализации: строка, которая сжимается короче 12 символов, сейф не создаёт.</p>
+        <h2>Нулевое разглашение</h2>
+        <p>Оператор не получает пароль, ключ и открытый текст. Успешная расшифровка на устройстве и есть проверка пароля. Отдельный парольный хеш не хранится: его можно было бы проверять, не имея данных, и это лишняя цель.</p>
+        <h2>Чего мы не храним</h2>
+        <ul>
+          <li>Мастер-пароль.</li>
+          <li>Ключ AES. Он неэкспортируемый и исчезает при закрытии вкладки, выходе и Esc.</li>
+          <li>Открытый текст заметки.</li>
+          <li>Счётчик блокировки в файле экспорта. Это состояние конкретного браузера.</li>
+        </ul>
+        <h2>Что прототип ещё не обещает</h2>
+        <ul>
+          <li>Аудита кода сторонней лабораторией нет. Дата появится здесь после проверки, а не заранее.</li>
+          <li>Блокировка после пяти ошибок не мешает офлайн-перебору копии файла.</li>
+          <li>Строки в JavaScript нельзя надёжно стереть из памяти.</li>
+          <li>Две вкладки могут перезаписать сейф последним сохранением.</li>
+          <li>Ключ восстановления на экране сейфа пока не заворачивает ключ данных.</li>
+        </ul>
+        <p><a class="btn btn-secondary" href="../app/">Открыть сейф</a></p>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap"><p><a href="../legal/offer/">Оферта</a> · <a href="../legal/privacy/">Конфиденциальность</a> · <a href="../legal/cookies/">Cookies</a> · <a href="../legal/pd-consent/">Согласие на ПДн</a></p></div>
+    </footer>
+    <script type="module" src="../js/site.js"></script>
+  </body>
+</html>

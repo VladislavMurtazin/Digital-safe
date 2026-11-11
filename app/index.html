@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+    <title>Сейф — Digital Safe</title>
+    <meta name="description" content="Открыть локальный сейф Digital Safe. Мастер-пароль проверяется расшифровкой AES-256-GCM и не сохраняется.">
+    <meta name="robots" content="noindex">
+    <meta property="og:title" content="Сейф — Digital Safe">
+    <meta property="og:description" content="Шифрование в браузере. Пароль и ключ не записываются на диск.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="stylesheet" href="../css/style.css">
+  </head>
+  <body>
+    <a class="skip" href="#main">К содержанию</a>
+    <header class="site-header">
+      <div class="wrap nav-bar">
+        <a class="logo" href="../">
+          <span class="logo-mark" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f8fafc" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          </span>
+          Digital Safe
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Меню</button>
+        <nav id="site-nav" class="site-nav" aria-label="Основное меню">
+          <a href="../how-it-works/">Как это работает</a>
+          <a href="../how-it-works/#guide">Руководство</a>
+          <a href="../security/">Безопасность</a>
+          <a href="../pricing/">Тарифы</a>
+          <a class="btn btn-secondary" href="login/">Войти</a>
+          <a class="btn btn-primary" href="./" aria-current="page">Открыть сейф</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="wrap narrow app-main">
+      <p class="warning" role="note">
+        ВНИМАНИЕ: Это прототип. Забытый мастер-пароль означает БЕЗВОЗВРАТНУЮ потерю данных.
+        Не используйте для реальных сид-фраз до финального аудита.
+        Переход в другое меню выгружает ключ из памяти.
+      </p>
+
+      <div id="login-screen">
+        <section class="panel" aria-labelledby="login-title">
+          <p class="kicker">Вход</p>
+          <h1 id="login-title">Открыть сейф</h1>
+          <p id="context-status" class="status" role="status">Проверяем контекст…</p>
+          <div class="label-row">
+            <label for="master-password">Мастер-пароль</label>
+            <span class="tip" tabindex="0">?<span class="tip-bubble" role="tooltip">Минимум 12 символов. Восстановление невозможно.</span></span>
+          </div>
+          <div class="password-field">
+            <input id="master-password" type="password" autocomplete="off" spellcheck="false" name="vault-master-password">
+            <button type="button" id="toggle-password" class="password-toggle" aria-label="Показать пароль" aria-pressed="false">
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                <ellipse cx="12" cy="12" rx="8.2" ry="5.2" fill="none" stroke="currentColor" stroke-width="1.7"/>
+                <circle class="eye-pupil" cx="12" cy="12" r="2.2"/>
+              </svg>
+            </button>
+          </div>
+          <p class="hint">Не короче 12 символов. Пять неверных паролей подряд блокируют следующую попытку: сначала на 1 сутки, затем на 3 суток.</p>
+          <div class="actions">
+            <button type="button" id="unlock-button">Открыть сейф</button>
+            <button type="button" id="login-import-button" class="button-quiet">Импортировать резервную копию</button>
+            <span id="unlock-spinner" class="spinner" hidden>Вывод ключа, обычно 1–2 секунды…</span>
+          </div>
+          <p id="unlock-result" class="result" role="status"></p>
+        </section>
+
+        <details class="panel">
+          <summary>Проверка криптоядра</summary>
+          <ul class="facts">
+            <li>Пароль нормализуется через NFKC, затем из него выводится ключ PBKDF2-SHA256, 600&nbsp;000 итераций.</li>
+            <li>Соль 16 байт создаётся один раз на сейф. Новый IV на 12 байт создаётся при каждом шифровании.</li>
+            <li>AES-256-GCM. Отдельный хеш пароля не хранится: верный пароль — это успешная расшифровка.</li>
+            <li>Ключ неэкспортируемый. Пока сейф открыт, он лежит только в памяти страницы.</li>
+          </ul>
+          <div class="actions">
+            <button type="button" id="self-test">Проверить криптоядро</button>
+            <span id="self-test-spinner" class="spinner" hidden>Вывод ключа, обычно 2–6 секунд…</span>
+          </div>
+          <p id="self-test-result" class="result" role="status"></p>
+        </details>
+      </div>
+
+      <section id="vault-screen" class="panel" hidden aria-labelledby="vault-title">
+        <div class="vault-heading">
+          <h1 id="vault-title">Сейф</h1>
+          <p class="status status-ok">Сейф разблокирован</p>
+        </div>
+        <label for="note">Заметка</label>
+        <textarea id="note" rows="12" spellcheck="false"></textarea>
+        <div class="actions">
+          <button type="button" id="save-button">Сохранить</button>
+          <span class="tip-wrap">
+            <button type="button" id="export-button" class="button-quiet">Экспорт</button>
+            <span class="tip" tabindex="0">?<span class="tip-bubble" role="tooltip">Скачивает зашифрованную копию вашего сейфа. Делайте это после каждого изменения.</span></span>
+          </span>
+          <button type="button" id="vault-import-button" class="button-quiet">Импортировать резервную копию</button>
+          <button type="button" id="lock-button" class="button-quiet">Выйти</button>
+          <span id="vault-spinner" class="spinner" hidden>Сохраняем…</span>
+        </div>
+        <p id="vault-result" class="result" role="status"></p>
+        <p class="hint">Ctrl+S сохраняет заметку. Esc выходит и оставляет на диске только шифротекст.</p>
+        <p class="hint">Экспорт скачивает зашифрованную копию. Счётчик блокировки в файл не входит.</p>
+
+        <details class="panel" id="dms-panel">
+          <summary>Экстренный доступ</summary>
+          <p class="warning">Для реальной работы Dead Man's Switch вам потребуется сгенерировать Ключ Восстановления и передать его доверенному лицу офлайн. Сервер никогда не увидит этот ключ. Сейчас это макет: ключ не открывает сейф и таймер никуда не уходит.</p>
+          <label for="dms-days">Интервал таймера (дни)</label>
+          <input id="dms-days" type="number" min="1" max="365" step="1" value="30">
+          <div class="actions">
+            <button type="button" id="dms-save">Сохранить интервал</button>
+            <button type="button" id="dms-generate" class="button-quiet">Сгенерировать Ключ Восстановления</button>
+            <button type="button" id="dms-copy" class="button-quiet">Скопировать</button>
+          </div>
+          <div class="label-row">
+            <label for="dms-key-output">Ключ восстановления</label>
+            <span class="tip" tabindex="0">?<span class="tip-bubble" role="tooltip">Скопируйте эту строку и передайте доверенному лицу офлайн. Сейчас это макет: без мастер-пароля сейф она не открывает.</span></span>
+          </div>
+          <input id="dms-key-output" class="mono" type="text" readonly spellcheck="false" autocomplete="off">
+          <p id="dms-result" class="result" role="status"></p>
+        </details>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>В localStorage хранятся соль, шифротекст и счётчик неверных попыток. Пароль и ключ туда не записываются.</p>
+        <p><a href="../legal/offer/">Оферта</a> · <a href="../legal/privacy/">Конфиденциальность</a> · <a href="../legal/cookies/">Cookies</a> · <a href="../legal/pd-consent/">Согласие на ПДн</a></p>
+      </div>
+    </footer>
+
+    <input id="import-file" class="file-input" type="file" accept=".json" tabindex="-1">
+
+    <dialog id="onboarding-dialog" aria-labelledby="onboarding-title">
+      <h2 id="onboarding-title">⚠️ Критически важно: Правила безопасности</h2>
+      <ul class="onboarding-list">
+        <li><span class="onboarding-mark" aria-hidden="true">✓</span><span>Этот пароль — <strong>единственный ключ</strong>. Мы не храним его и <strong>не сможем восстановить</strong>.</span></li>
+        <li><span class="onboarding-mark" aria-hidden="true">✓</span><span>После добавления данных сразу нажмите <strong>Экспорт</strong> и сохраните резервную копию.</span></li>
+        <li><span class="onboarding-mark" aria-hidden="true">✓</span><span>Храните файл копии отдельно: флешка или другое надёжное место.</span></li>
+      </ul>
+      <button type="button" id="onboarding-accept" disabled>Я понял, открыть сейф (3)</button>
+    </dialog>
+
+    <dialog id="import-dialog" aria-labelledby="import-title">
+      <h2 id="import-title">Пароль резервной копии</h2>
+      <p class="hint">Файл заменит локальный сейф только после успешной расшифровки.</p>
+      <label for="import-password">Мастер-пароль</label>
+      <div class="password-field">
+        <input id="import-password" type="password" autocomplete="off" spellcheck="false" name="vault-import-password">
+        <button type="button" id="toggle-import-password" class="password-toggle" aria-label="Показать пароль" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+            <ellipse cx="12" cy="12" rx="8.2" ry="5.2" fill="none" stroke="currentColor" stroke-width="1.7"/>
+            <circle class="eye-pupil" cx="12" cy="12" r="2.2"/>
+          </svg>
+        </button>
+      </div>
+      <p id="import-result" class="result" role="status"></p>
+      <div class="actions">
+        <button type="button" id="import-confirm">Восстановить</button>
+        <button type="button" id="import-cancel" class="button-quiet">Отмена</button>
+        <span id="import-spinner" class="spinner" hidden>Проверяем копию…</span>
+      </div>
+    </dialog>
+
+    <script type="module" src="../js/app.js"></script>
+  </body>
+</html>
